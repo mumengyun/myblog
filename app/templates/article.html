@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ article_data.title }}</title>
+{% endblock %}
+
+{% block index %}
+<p>{{ article_data.content }}</p>
+
+<form action="{% url 'app1:article' article_data.id %}" method="get">
+    <button type="submit" name="like" value="1" class="btn btn-default btn-lg">
+        <span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 点赞{{ article_data.like_num }}
+    </button>
+</form>
+
+
+{% block comment %}
+{% load comments %}
+{% get_comment_form for article_data as form %}
+<form action="{% comment_form_target %}" method="post">{% csrf_token %}
+    {# 必须的字段 #}
+    {{ form.object_pk }}
+    {{ form.content_type }}
+    {{ form.timestamp }}
+    {{ form.site }}
+    {{ form.submit_date }}
+    {{ form.security_hash }}
+    <p><label for="id_name">名字: </label>{{ form.name }}</p>
+    <p><label for="id_email">邮箱: </label>{{ form.email }}</p>
+    <p><label for="id_url">站点: </label>{{ form.url }}</p>
+    <p><label for="id_comment">内容: </label>{{ form.comment }}</p>
+    <span style="display: none;">{{ form.honeypot }}</span>
+
+    <input type="submit" value="提交"/>
+</form>
+{% get_comment_count for article_data as comment_count %}
+<p>评论数：{{ comment_count }}:</p>
+
+{% get_comment_list for article_data as comment_list %}
+{% for comment in comment_list %}
+<p>评论人: {{ comment.user_name }} 发表于 {{ comment.submit_date }}</p>
+<p>内容：{{ comment.comment }}</p>
+{% endfor %}
+{% endblock %}
+
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}

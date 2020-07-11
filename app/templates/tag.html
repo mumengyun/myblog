@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ tag_id }}</title>
+{% endblock %}
+
+{% block index %}
+{% for blog in paginator_data.page_list %}
+<ul class="list-group">
+    <li class="list-group-item"><a href="{% url 'app1:article' blog.id %}">{{ blog.title }}<span class="badge">阅读：{{ blog.view_num }}  点赞：{{blog.like_num}}</span></a></li>
+</ul>
+{% endfor %}
+{% endblock %}

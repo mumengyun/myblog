@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>搜索： {{ search_text }}</title>
+{% endblock %}
+
+{% block index %}
+<h4>共搜索有{{ articles_total }} 篇博客！</h4>
+<!--搜索文章列表-->
+{% for blog in paginator_data.page_list %}
+<ul class="list-group">
+    <li class="list-group-item"><a href="{% url 'app1:article' blog.id %}">{{ blog.title }}<span class="badge">阅读：{{ blog.view_num }}  点赞：{{blog.like_num}}</span></a></li>
+</ul>
+{% endfor %}
+
+{% endblock %}
+
+<!--分页开始-->
+{% block pagination %}
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li>
+      <a href="?key={{search_text}}&page_num=1" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% for page in paginator_data.page_range %}
+    <li><a href="?key={{search_text}}&page_num={{ page }}">{{ page }}</a></li>
+    {% endfor %}
+    <li>
+      <a href="?key={{search_text}}&page_num={{ paginator_data.page_next }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+{% endblock %}
